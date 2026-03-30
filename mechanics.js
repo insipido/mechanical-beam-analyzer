@@ -1,34 +1,42 @@
-function analyzeBeamFull(L, P, a, E, I, points = 120) {
-  const RA = P * (L - a) / L;
-  const RB = P * a / L;
+function analyzeBeamMultiple(L, loads, E, I, points = 150) {
+  let RA = 0;
+  let RB = 0;
 
-  let x = [];
-  let shear = [];
-  let moment = [];
-  let deflection = [];
+  loads.forEach(load => {
+    RA += load.force * (L - load.position) / L;
+    RB += load.force * load.position / L;
+  });
+
+  let x = [], shear = [], moment = [], deflection = [];
 
   for (let i = 0; i <= points; i++) {
     let xi = (L * i) / points;
     x.push(xi);
 
-    let V = xi < a ? RA : RA - P;
+    let V = RA;
+    let M = RA * xi;
+    let y = 0;
+
+    loads.forEach(load => {
+      if (xi >= load.position) {
+        V -= load.force;
+        M -= load.force * (xi - load.position);
+      }
+      if (xi >= load.position) {
+        y +=
+          load.force *
+          (xi - load.position) *
+          (L - xi) *
+          (L - load.position) /
+          (6 * E * I * L);
+      }
+    });
+
     shear.push(V);
-
-    let M = xi < a ? RA * xi : RA * xi - P * (xi - a);
     moment.push(M);
-
-    let y;
-    if (xi <= a) {
-      y =
-        (P * xi * (L - a) * (L * L - (L - a) ** 2 - xi ** 2)) /
-        (6 * E * I * L);
-    } else {
-      y =
-        (P * a * (L - xi) * (L * L - a ** 2 - (L - xi) ** 2)) /
-        (6 * E * I * L);
-    }
     deflection.push(y);
   }
 
   return { RA, RB, x, shear, moment, deflection };
 }
+``
