@@ -1,20 +1,21 @@
-# mechanical-beam-analyzer
+# Mechanical Beam Analyzer
 
-Web-based beam analysis tool using HTML & JavaScript.
+Web-based structural analysis tool for simply supported beams.
 
 ## Features
-- Simply supported beam
-- Point load
-- Reaction forces
+- Image upload (reference)
+- Reaction force calculation
 - Shear force diagram
 - Bending moment diagram
-- Deflection calculation
+- Deflection curve (Euler–Bernoulli)
+- Runs fully in the browser
 
 ## Assumptions
-- Linear elastic behavior
-- Small deflections
+- Linear elastic material
+- Small deflection theory
 - Static loading
-- Euler–Bernoulli beam theory
+- Constant EI
+- Single point load
 
 ## Disclaimer
-This tool is for educational and preliminary analysis only.
+Educational and preliminary analysis only. Not for final design use.
