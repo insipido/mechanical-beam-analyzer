@@ -5,21 +5,15 @@ body {
 
 .toolbar, .inputs {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   margin-bottom: 10px;
+  align-items: center;
 }
 
 canvas {
   border: 1px solid #333;
-  display: block;
-  margin-bottom: 10px;
   background: #fff;
-}
-
-label input {
-  border: 2px solid #007acc;
-  background: #eef6ff;
-  padding: 4px;
+  margin-bottom: 10px;
 }
 
 #status {
@@ -27,8 +21,12 @@ label input {
   margin-left: auto;
 }
 
-pre {
-  background: #eee;
-  padding: 10px;
+label {
+  font-size: 0.9rem;
 }
-``
+
+input {
+  border: 2px solid #007acc;
+  background: #eef6ff;
+  padding: 4px;
+}
