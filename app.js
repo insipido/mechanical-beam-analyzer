@@ -1,74 +1,65 @@
-const beamCanvas = document.getElementById("beam");
-const shearCanvas = document.getElementById("shear");
-const momentCanvas = document.getElementById("moment");
-const ctxB = beamCanvas.getContext("2d");
-const ctxS = shearCanvas.getContext("2d");
-const ctxM = momentCanvas.getContext("2d");
+const byId = id => {
+  const el = document.getElementById(id);
+  if (!el) throw new Error(`Missing element: ${id}`);
+  return el;
+};
+
+const L = byId("L");
+const P = byId("P");
+const Px = byId("Px");
+const w = byId("w");
+const x1 = byId("x1");
+const x2 = byId("x2");
+
+const beamCanvas = byId("beam").getContext("2d");
+const shearCanvas = byId("shear").getContext("2d");
+const momentCanvas = byId("moment").getContext("2d");
 
 let pointLoads = [];
 let distLoads = [];
 
-beamCanvas.addEventListener("click", e => {
-  const rect = beamCanvas.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / beamCanvas.width *
-            Number(L.value);
+byId("addPointLoad").onclick = () => {
+  pointLoads.push({ P: +P.value, x: +Px.value });
+};
 
-  if (tool.value === "point") {
-    pointLoads.push({ x, P: 10 });
-  } else {
-    distLoads.push({ x1: x, x2: x + 1, w: 5 });
-  }
+byId("addDistLoad").onclick = () => {
+  distLoads.push({ w: +w.value, x1: +x1.value, x2: +x2.value });
+};
 
-  drawBeam();
-});
-
-function drawBeam() {
-  ctxB.clearRect(0, 0, beamCanvas.width, beamCanvas.height);
-  ctxB.beginPath();
-  ctxB.moveTo(50, 100);
-  ctxB.lineTo(850, 100);
-  ctxB.stroke();
-
-  pointLoads.forEach(p => {
-    let px = 50 + 800 * p.x / L.value;
-    ctxB.beginPath();
-    ctxB.moveTo(px, 60);
-    ctxB.lineTo(px, 100);
-    ctxB.stroke();
-  });
-}
-
-analyze.onclick = () => {
-  const res = analyzeBeam({
+byId("analyzeBtn").onclick = () => {
+  const result = analyzeBeam({
     L: +L.value,
-    E: +E.value,
-    I: +I.value,
     pointLoads,
     distLoads
   });
 
-  plot(ctxS, res.x, res.V);
-  plot(ctxM, res.x, res.M);
-  status.textContent = "Solved";
+  plot(shearCanvas, result.x, result.V);
+  plot(momentCanvas, result.x, result.M);
+
+  byId("output").textContent =
+    `RA = ${result.reactions.RA.toFixed(2)}\n` +
+    `RB = ${result.reactions.RB.toFixed(2)}\n` +
+    `Max |V| = ${Math.max(...result.V.map(v => Math.abs(v))).toFixed(2)}\n` +
+    `Max |M| = ${Math.max(...result.M.map(v => Math.abs(v))).toFixed(2)}`;
 };
 
 function plot(ctx, x, y) {
-  ctx.clearRect(0, 0, 900, 150);
-  const max = Math.max(...y.map(Math.abs)) || 1;
+  ctx.clearRect(0,0,900,150);
+  const max = Math.max(...y.map(v => Math.abs(v))) || 1;
 
   ctx.beginPath();
-  y.forEach((v, i) => {
-    const px = 50 + 800 * x[i] / x.at(-1);
+  ctx.moveTo(50,75);
+
+  y.forEach((v,i) => {
+    const px = 50 + 800 * x[i] / x[x.length-1];
     const py = 75 - 60 * v / max;
     ctx.lineTo(px, py);
   });
+
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(50,75);
+  ctx.lineTo(850,75);
+  ctx.strokeStyle = "#888";
   ctx.stroke();
 }
-
-reset.onclick = () => {
-  pointLoads = [];
-  distLoads = [];
-  drawBeam();
-  ctxS.clearRect(0,0,900,150);
-  ctxM.clearRect(0,0,900,150);
-};
