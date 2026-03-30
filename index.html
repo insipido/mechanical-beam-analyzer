@@ -2,77 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Mechanical Beam Analyzer</title>
-  style.css
+  <title>Structural Analyzer</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Mechanical Beam Analyzer</h1>
+<h1>Structural Structural Analyzer</h1>
 
-<div class="control-panel">
-  <input type="file" id="imageUpload" accept="image/*">
-  <button id="startBtn">Start Analysis</button>
-  <button id="stopBtn">Stop</button>
-  <button id="resetBtn">Reset</button>
+<div class="toolbar">
+  <select id="tool">
+    <option value="node">Add Node</option>
+    <option value="beam">Add Beam / Frame</option>
+    <option value="truss">Add Truss</option>
+    <option value="pointLoad">Point Load</option>
+    <option value="distLoad">Distributed Load</option>
+    <option value="momentLoad">Moment Load</option>
+  </select>
 
   <select id="unitSystem">
     <option value="SI">SI (m, N)</option>
     <option value="Imperial">Imperial (ft, lbf)</option>
   </select>
 
-  <span id="status">Status: Idle</span>
+  <button id="solveBtn">Solve</button>
+  <button id="resetBtn">Reset</button>
+  <span id="status">Idle</span>
 </div>
 
-<div class="main-layout">
+<canvas id="canvas" width="900" height="500"></canvas>
 
-  <div class="input-panel">
-    <h2>Inputs</h2>
+<pre id="output"></pre>
 
-    <div class="input-group">
-      <label>Beam Length</label>
-      <input id="beamLength" type="number" value="6">
-    </div>
-
-    <div class="input-group">
-      <label>Young’s Modulus (E)</label>
-      <input id="E" type="number" value="200000000000">
-    </div>
-
-    <div class="input-group">
-      <label>Second Moment of Area (I)</label>
-      <input id="I" type="number" value="0.00001">
-    </div>
-
-    <h3>Point Loads</h3>
-    <p class="hint">Click on the beam to add loads</p>
-
-    <ul id="loadList"></ul>
-  </div>
-
-  <div class="visual-panel">
-    <h3>Reference Image</h3>
-    <canvas id="imageCanvas" width="900" height="200"></canvas>
-
-    <h3>Beam (click to add loads)</h3>
-    <canvas id="beamCanvas" width="900" height="180"></canvas>
-
-    <div id="results"></div>
-
-    <h3>Shear Force Diagram</h3>
-    <canvas id="shearCanvas" width="900" height="180"></canvas>
-
-    <h3>Bending Moment Diagram</h3>
-    <canvas id="momentCanvas" width="900" height="180"></canvas>
-
-    <h3>Deflection Curve</h3>
-    <canvas id="deflectionCanvas" width="900" height="180"></canvas>
-  </div>
-
-</div>
-
-mechanics.jsscript>
-app.js>
+<script src="units.js"></script>
+<script src="solver.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
-``
