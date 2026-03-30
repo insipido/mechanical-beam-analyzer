@@ -7,35 +7,36 @@
 </head>
 <body>
 
-<h1>Structural Structural Analyzer</h1>
+<h1>Structural Analyzer</h1>
 
 <div class="toolbar">
-  <select id="tool">
-    <option value="node">Add Node</option>
-    <option value="beam">Add Beam / Frame</option>
-    <option value="truss">Add Truss</option>
-    <option value="pointLoad">Point Load</option>
-    <option value="distLoad">Distributed Load</option>
-    <option value="momentLoad">Moment Load</option>
-  </select>
+  <label>
+    Tool:
+    <select id="toolSelect">
+      <option value="node">Add Node</option>
+      <option value="pointLoad">Add Point Load</option>
+    </select>
+  </label>
 
-  <select id="unitSystem">
-    <option value="SI">SI (m, N)</option>
-    <option value="Imperial">Imperial (ft, lbf)</option>
-  </select>
+  <label>
+    Units:
+    <select id="unitSystem">
+      <option value="SI">SI (m, N)</option>
+      <option value="Imperial">Imperial (ft, lbf)</option>
+    </select>
+  </label>
 
   <button id="solveBtn">Solve</button>
   <button id="resetBtn">Reset</button>
+
   <span id="status">Idle</span>
 </div>
 
-<canvas id="canvas" width="900" height="500"></canvas>
+<canvas id="canvas" width="900" height="400"></canvas>
 
 <pre id="output"></pre>
 
-<script src="units.js"></script>
-<script src="solver.js"></script>
 <script src="app.js"></script>
-
 </body>
 </html>
+``
