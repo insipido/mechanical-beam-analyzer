@@ -1,42 +1,85 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   padding: 20px;
+  background: #f7f7f7;
 }
 
-h1, h3 {
-  margin-top: 20px;
-}
-
-canvas {
-  border: 1px solid #333;
-  margin-bottom: 15px;
+h1 {
+  margin-bottom: 10px;
 }
 
 .control-panel {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 15px;
-}
-
-.inputs {
-  display: grid;
-  grid-template-columns: repeat(5, auto);
-  gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 button {
-  padding: 6px 12px;
+  padding: 6px 14px;
   cursor: pointer;
 }
 
 #status {
-  margin-left: 15px;
+  margin-left: auto;
   font-weight: bold;
 }
 
+/* MAIN LAYOUT */
+.main-layout {
+  display: flex;
+  gap: 20px;
+}
+
+/* INPUT PANEL */
+.input-panel {
+  width: 280px;
+  background: #ffffff;
+  border: 2px solid #ccc;
+  padding: 15px;
+}
+
+.input-panel h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.input-group label {
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.input-group input {
+  padding: 6px;
+  border: 2px solid #007acc;
+  background: #eef6ff;
+  font-size: 0.9rem;
+}
+
+.input-group input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: #ff8800;
+}
+
+/* VISUAL PANEL */
+.visual-panel {
+  flex: 1;
+}
+
+canvas {
+  border: 1px solid #333;
+  background: #ffffff;
+  margin-bottom: 15px;
+}
+
 #results {
-  margin-top: 10px;
+  margin: 10px 0;
   font-weight: bold;
 }
