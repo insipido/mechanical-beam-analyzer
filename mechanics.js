@@ -1,19 +1,15 @@
-/**
- * Euler–Bernoulli beam statics (shear & moment only)
- * Deflection uses E and I but is intentionally not faked here.
- */
+const SECTIONS = 120; // discretization resolution
 
-function analyzeBeam({ L, pointLoads, distLoads, sections = 80 }) {
-  if (L <= 0) throw new Error("Beam length must be positive.");
+function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
+  if (L <= 0) throw new Error("Beam length must be > 0");
+  if (E <= 0 || I <= 0) throw new Error("E and I must be > 0");
 
-  const dx = L / sections;
-  const x = [];
-  const V = [];
-  const M = [];
+  const dx = L / SECTIONS;
+  const x = [], V = [], M = [], curvature = [], slope = [], y = [];
 
   const reactions = computeReactions(L, pointLoads, distLoads);
 
-  for (let i = 0; i <= sections; i++) {
+  for (let i = 0; i <= SECTIONS; i++) {
     const xi = i * dx;
     let shear = reactions.RA;
     let moment = reactions.RA * xi;
@@ -26,12 +22,12 @@ function analyzeBeam({ L, pointLoads, distLoads, sections = 80 }) {
     });
 
     distLoads.forEach(d => {
-      if (xi > d.x1) {
-        const length = Math.min(xi, d.x2) - d.x1;
-        if (length > 0) {
-          const wRes = d.w * length;
+      if (xi >= d.x1) {
+        const len = Math.min(xi, d.x2) - d.x1;
+        if (len > 0) {
+          const wRes = d.w * len;
           shear -= wRes;
-          moment -= wRes * (xi - (d.x1 + length / 2));
+          moment -= wRes * (xi - (d.x1 + len / 2));
         }
       }
     });
@@ -39,14 +35,28 @@ function analyzeBeam({ L, pointLoads, distLoads, sections = 80 }) {
     x.push(xi);
     V.push(shear);
     M.push(moment);
+    curvature.push(moment / (E * I));
   }
 
-  return { reactions, x, V, M };
+  slope[0] = 0;
+  y[0] = 0;
+
+  for (let i = 1; i <= SECTIONS; i++) {
+    slope[i] = slope[i - 1] + curvature[i - 1] * dx;
+    y[i] = y[i - 1] + slope[i - 1] * dx;
+  }
+
+  // enforce y(L)=0
+  const correction = y[SECTIONS] / L;
+  for (let i = 0; i <= SECTIONS; i++) {
+    y[i] -= correction * x[i];
+  }
+
+  return { reactions, x, V, M, y };
 }
 
 function computeReactions(L, P, W) {
-  let total = 0;
-  let moment = 0;
+  let total = 0, moment = 0;
 
   P.forEach(p => {
     total += p.P;
@@ -54,12 +64,13 @@ function computeReactions(L, P, W) {
   });
 
   W.forEach(d => {
-    const w = d.w * (d.x2 - d.x1);
+    const wTotal = d.w * (d.x2 - d.x1);
     const xc = (d.x1 + d.x2) / 2;
-    total += w;
-    moment += w * xc;
+    total += wTotal;
+    moment += wTotal * xc;
   });
 
   const RB = moment / L;
   return { RA: total - RB, RB };
 }
+``
