@@ -1,45 +1,30 @@
-function analyzeBeamFull(L, P, a, E, I, points = 100) {
-  const RA = P * (L - a) / L;
-  const RB = P * a / L;
+function analyze() {
+  const L = Number(document.getElementById("beamLength").value);
+  const P = Number(document.getElementById("forceValue").value);
+  const a = Number(document.getElementById("forcePosition").value);
+  const E = Number(document.getElementById("E").value);
+  const I = Number(document.getElementById("I").value);
 
-  let x = [];
-  let shear = [];
-  let moment = [];
-  let deflection = [];
+  drawBeam(L, P, a);
 
-  for (let i = 0; i <= points; i++) {
-    let xi = (L * i) / points;
-    x.push(xi);
+  const result = analyzeBeamFull(L, P, a, E, I);
 
-    // Shear force
-    let V = xi < a ? RA : RA - P;
-    shear.push(V);
+  plotDiagram("shearCanvas", result.x, result.shear, "Shear (kN)");
+  plotDiagram("momentCanvas", result.x, result.moment, "Moment (kN·m)");
+  plotDiagram(
+    "deflectionCanvas",
+    result.x,
+    result.deflection,
+    "Deflection (m)"
+  );
 
-    // Bending moment
-    let M = xi < a ? RA * xi : RA * xi - P * (xi - a);
-    moment.push(M);
-
-    // Deflection (piecewise solution)
-    let y;
-    if (xi <= a) {
-      y =
-        (P * xi * (L - a) * (L * L - (L - a) ** 2 - xi ** 2)) /
-        (6 * E * I * L);
-    } else {
-      y =
-        (P * a * (L - xi) * (L * L - a ** 2 - (L - xi) ** 2)) /
-        (6 * E * I * L);
-    }
-    deflection.push(y);
-  }
-
-  return {
-    RA,
-    RB,
-    x,
-    shear,
-    moment,
-    deflection,
-  };
+  document.getElementById("results").innerHTML = `
+    Reaction A: ${result.RA.toFixed(2)} kN<br>
+    Reaction B: ${result.RB.toFixed(2)} kN<br>
+    Max Moment: ${Math.max(...result.moment).toFixed(2)} kN·m<br>
+    Max Deflection: ${Math.max(
+      ...result.deflection.map(Math.abs)
+    ).toExponential(3)} m
+  `;
 }
 ``
