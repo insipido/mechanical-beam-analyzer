@@ -1,15 +1,13 @@
+<div class="control-panel">
+  <input type="file" id="imageUpload" accept="image/*">
 
-<h3>Shear Force Diagram</h3>
-<canvas id="shearCanvas" width="900" height="200"></canvas>
+  <button id="startBtn">Start Analysis</button>
+  <button id="stopBtn">Stop</button>
+  <button id="resetBtn">Reset</button>
 
-<h3>Bending Moment Diagram</h3>
-<canvas id="momentCanvas" width="900" height="200"></canvas>
+  <span id="status">Status: Idle</span>
+</div>
 
-<h3>Deflection Curve</h3>
-<canvas id="deflectionCanvas" width="900" height="200"></canvas>
 
-<label>E (Pa):</label>
-<input id="E" type="number" value="200000000000">
-
-<label>I (m⁴):</label>
-<input id="I" type="number" value="0.00001">
+<h3>Uploaded Reference Image</h3>
+<canvas id="imageCanvas" width="900" height="300"></canvas>
