@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Mechanical Beam Analyzer</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +10,7 @@
 <h1>Mechanical Beam Analyzer</h1>
 
 <div class="toolbar">
-  <label for="units">Units:</label>
+  <label>Units:</label>
   <select id="units">
     <option value="SI">SI (m, N)</option>
     <option value="Imperial">Imperial (ft, lbf)</option>
@@ -19,45 +18,31 @@
 
   <button id="analyzeBtn">Analyze</button>
   <button id="resetBtn">Reset</button>
-
   <span id="status">Idle</span>
 </div>
 
 <div class="inputs">
-  <label for="L">Beam Length (m)</label>
-  <input id="L" type="number" value="6">
-
-  <label for="E">Young’s Modulus E (Pa)</label>
-  <input id="E" type="number" value="200000000000">
-
-  <label for="I">Moment of Inertia I (m⁴)</label>
-  <input id="I" type="number" value="0.00001">
+  <label>Beam Length (m)</label><input id="L" value="3">
+  <label>E (Pa)</label><input id="E" value="200000000000">
+  <label>I (m⁴)</label><input id="I" value="0.00001">
 </div>
 
 <h3>Point Load</h3>
 <div class="inputs">
-  <label for="P">Magnitude (N)</label>
-  <input id="P" type="number">
-
-  <label for="Px">Position (m)</label>
-  <input id="Px" type="number">
-
-  <button id="addPointLoad">Add Point Load</button>
+  <label>P (N)</label><input id="P" value="50">
+  <label>x (m)</label><input id="Px" value="1.5">
+  <button id="addPointLoad">Add</button>
 </div>
 
 <h3>Distributed Load</h3>
 <div class="inputs">
-  <label for="w">Intensity (N/m)</label>
-  <input id="w" type="number">
-
-  <label for="x1">Start (m)</label>
-  <input id="x1" type="number">
-
-  <label for="x2">End (m)</label>
-  <input id="x2" type="number">
-
-  <button id="addDistLoad">Add Distributed Load</button>
+  <label>w (N/m)</label><input id="w" value="80">
+  <label>x₁ (m)</label><input id="x1" value="1.8">
+  <label>x₂ (m)</label><input id="x2" value="2.5">
+  <button id="addDistLoad">Add</button>
 </div>
+
+<div id="loadsList"></div>
 
 <canvas id="beam" width="900" height="220"></canvas>
 <canvas id="shear" width="900" height="150"></canvas>
@@ -66,7 +51,6 @@
 
 <pre id="output"></pre>
 
-<!-- ✅ THESE MUST BE SCRIPT TAGS -->
 <script src="mechanics.js"></script>
 <script src="app.js"></script>
 
