@@ -1,11 +1,8 @@
-const SECTIONS = 120; // discretization resolution
+const SECTIONS = 100;
 
 function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
-  if (L <= 0) throw new Error("Beam length must be > 0");
-  if (E <= 0 || I <= 0) throw new Error("E and I must be > 0");
-
   const dx = L / SECTIONS;
-  const x = [], V = [], M = [], curvature = [], slope = [], y = [];
+  const x = [], V = [], M = [], y = [];
 
   const reactions = computeReactions(L, pointLoads, distLoads);
 
@@ -25,9 +22,9 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
       if (xi >= d.x1) {
         const len = Math.min(xi, d.x2) - d.x1;
         if (len > 0) {
-          const wRes = d.w * len;
-          shear -= wRes;
-          moment -= wRes * (xi - (d.x1 + len / 2));
+          const w = d.w * len;
+          shear -= w;
+          moment -= w * (xi - (d.x1 + len / 2));
         }
       }
     });
@@ -35,18 +32,17 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
     x.push(xi);
     V.push(shear);
     M.push(moment);
-    curvature.push(moment / (E * I));
   }
 
-  slope[0] = 0;
+  // Deflection by double integration
   y[0] = 0;
-
+  let slope = 0;
   for (let i = 1; i <= SECTIONS; i++) {
-    slope[i] = slope[i - 1] + curvature[i - 1] * dx;
-    y[i] = y[i - 1] + slope[i - 1] * dx;
+    const curvature = M[i - 1] / (E * I);
+    slope += curvature * dx;
+    y[i] = y[i - 1] + slope * dx;
   }
 
-  // enforce y(L)=0
   const correction = y[SECTIONS] / L;
   for (let i = 0; i <= SECTIONS; i++) {
     y[i] -= correction * x[i];
@@ -71,6 +67,3 @@ function computeReactions(L, P, W) {
   });
 
   const RB = moment / L;
-  return { RA: total - RB, RB };
-}
-``
