@@ -1,16 +1,15 @@
-# Mechanical Beam Analyzer
+# Structural Analyzer
 
-Advanced browser-based beam analysis tool.
+Finite‑element structural solver in the browser.
 
-## Features
-- Multiple point loads
-- Click-to-add loads on beam
-- Editable load list
-- SI / Imperial units (ISO used internally)
-- Shear force, bending moment & deflection diagrams
+## Supported
+- Determinate & indeterminate structures
+- Beams, frames, trusses
+- Point, distributed, moment loads
+- SI & Imperial units (SI internal)
 
-## Assumptions
-- Linear elastic behavior
-- Static loading
-- Euler–Bernoulli beam theory
-- Simply supported beam
+## Deployment
+Enable GitHub Pages from repository root.
+
+## Disclaimer
+Educational / preliminary analysis only.
