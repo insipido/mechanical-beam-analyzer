@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Mechanical Beam Analyzer</title>
-  <link rel="stylesheet" href="style.css">
+  style.css
 </head>
 <body>
 
@@ -14,48 +14,47 @@
   <button id="startBtn">Start Analysis</button>
   <button id="stopBtn">Stop</button>
   <button id="resetBtn">Reset</button>
+
+  <select id="unitSystem">
+    <option value="SI">SI (m, N)</option>
+    <option value="Imperial">Imperial (ft, lbf)</option>
+  </select>
+
   <span id="status">Status: Idle</span>
 </div>
 
 <div class="main-layout">
 
-  <!-- INPUT PANEL -->
   <div class="input-panel">
-    <h2>Input Parameters</h2>
+    <h2>Inputs</h2>
 
     <div class="input-group">
-      <label>Beam Length (m)</label>
+      <label>Beam Length</label>
       <input id="beamLength" type="number" value="6">
     </div>
 
     <div class="input-group">
-      <label>Point Load (kN)</label>
-      <input id="forceValue" type="number" value="10">
-    </div>
-
-    <div class="input-group">
-      <label>Load Position from Left (m)</label>
-      <input id="forcePosition" type="number" value="3">
-    </div>
-
-    <div class="input-group">
-      <label>Young’s Modulus E (Pa)</label>
+      <label>Young’s Modulus (E)</label>
       <input id="E" type="number" value="200000000000">
     </div>
 
     <div class="input-group">
-      <label>Second Moment of Area I (m⁴)</label>
+      <label>Second Moment of Area (I)</label>
       <input id="I" type="number" value="0.00001">
     </div>
+
+    <h3>Point Loads</h3>
+    <p class="hint">Click on the beam to add loads</p>
+
+    <ul id="loadList"></ul>
   </div>
 
-  <!-- VISUAL PANEL -->
   <div class="visual-panel">
-    <h3>Uploaded Reference Image</h3>
+    <h3>Reference Image</h3>
     <canvas id="imageCanvas" width="900" height="200"></canvas>
 
-    <h3>Beam Model</h3>
-    <canvas id="canvas" width="900" height="180"></canvas>
+    <h3>Beam (click to add loads)</h3>
+    <canvas id="beamCanvas" width="900" height="180"></canvas>
 
     <div id="results"></div>
 
@@ -71,8 +70,9 @@
 
 </div>
 
-<script src="mechanics.js"></script>
-<script src="app.js"></script>
+mechanics.jsscript>
+app.js>
 
 </body>
 </html>
+``
