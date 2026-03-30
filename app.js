@@ -10,16 +10,21 @@ function scaleX(x) {
   return 50 + 800 * x / L.value;
 }
 
+
 function drawBeam() {
   ctxBeam.clearRect(0, 0, 900, 220);
 
-  // beam
+  // Beam
   ctxBeam.beginPath();
   ctxBeam.moveTo(50, 110);
   ctxBeam.lineTo(850, 110);
   ctxBeam.stroke();
 
-  // point loads
+  // Supports
+  drawSupport(supportA.value, "blue");
+  drawSupport(supportB.value, "blue");
+
+  // Point loads
   pointLoads.forEach(p => {
     const px = scaleX(p.x);
     ctxBeam.beginPath();
@@ -29,16 +34,26 @@ function drawBeam() {
     ctxBeam.stroke();
   });
 
-  // distributed loads
+  // Distributed loads
   distLoads.forEach(d => {
     const x1 = scaleX(d.x1);
     const x2 = scaleX(d.x2);
     ctxBeam.fillStyle = "rgba(255,0,0,0.2)";
     ctxBeam.fillRect(x1, 80, x2 - x1, 30);
   });
-
-  updateLoadList();
 }
+
+function drawSupport(x, color) {
+  const px = scaleX(+x);
+  ctxBeam.beginPath();
+  ctxBeam.moveTo(px - 10, 120);
+  ctxBeam.lineTo(px + 10, 120);
+  ctxBeam.lineTo(px, 140);
+  ctxBeam.closePath();
+  ctxBeam.fillStyle = color;
+  ctxBeam.fill();
+}
+
 
 function updateLoadList() {
   loadsList.innerHTML =
