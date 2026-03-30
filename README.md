@@ -1,15 +1,17 @@
-# Structural Analyzer
+# Mechanical Beam Analyzer
 
-Web-based mechanical beam analysis tool.
+A browser-based beam analysis tool with real mechanics.
 
-## Features
-- Real unit system (SI internal)
+## Implemented
 - Point loads
 - Distributed loads
-- Shear and bending moment diagrams
-- Determinate & indeterminate beam solving
+- Reaction forces
+- Shear & bending moment diagrams
+- SI internal units
+- Validated inputs
 
-## Next Extensions (Architecturally Ready)
-- Frame elements
-- Truss solvers
-- Image-assisted force detection
+## Not faked
+- Deflections (requires BCs & solver)
+- Indeterminate systems
+- Frames & trusses
+- Image-based load detection
