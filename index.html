@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Structural Analyzer</title>
+  <title>Mechanical Structure Analyzer</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Structural Analyzer</h1>
+<h1>Mechanical Structure Analyzer</h1>
 
 <div class="toolbar">
   <label>
     Tool:
     <select id="toolSelect">
       <option value="node">Add Node</option>
-      <option value="pointLoad">Add Point Load</option>
+      <option value="beam">Add Beam</option>
+      <option value="load">Add Point Load</option>
     </select>
   </label>
 
@@ -26,17 +27,18 @@
     </select>
   </label>
 
-  <button id="solveBtn">Solve</button>
+  <button id="analyzeBtn">Analyze</button>
   <button id="resetBtn">Reset</button>
 
   <span id="status">Idle</span>
 </div>
 
-<canvas id="canvas" width="900" height="400"></canvas>
+<canvas id="canvas" width="1000" height="450"></canvas>
 
 <pre id="output"></pre>
 
+<script src="mechanics.js"></script>
 <script src="app.js"></script>
+
 </body>
 </html>
-``
