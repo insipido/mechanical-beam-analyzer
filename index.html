@@ -2,43 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Mechanical Structure Analyzer</title>
+  <title>Structural Analyzer</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Mechanical Structure Analyzer</h1>
+<h1>Structural Analyzer</h1>
 
 <div class="toolbar">
   <label>
     Tool:
-    <select id="toolSelect">
-      <option value="node">Add Node</option>
-      <option value="beam">Add Beam</option>
-      <option value="load">Add Point Load</option>
+    <select id="tool">
+      <option value="point">Point Load</option>
+      <option value="distributed">Distributed Load</option>
     </select>
   </label>
 
   <label>
     Units:
-    <select id="unitSystem">
+    <select id="units">
       <option value="SI">SI (m, N)</option>
       <option value="Imperial">Imperial (ft, lbf)</option>
     </select>
   </label>
 
-  <button id="analyzeBtn">Analyze</button>
-  <button id="resetBtn">Reset</button>
+  <button id="analyze">Analyze</button>
+  <button id="reset">Reset</button>
 
   <span id="status">Idle</span>
 </div>
 
-<canvas id="canvas" width="1000" height="450"></canvas>
+<div class="inputs">
+  <label>Beam Length <input id="L" value="6"></label>
+  <label>E (Pa) <input id="E" value="200000000000"></label>
+  <label>I (m⁴) <input id="I" value="0.00001"></label>
+</div>
+
+<canvas id="beam" width="900" height="200"></canvas>
+<canvas id="shear" width="900" height="150"></canvas>
+<canvas id="moment" width="900" height="150"></canvas>
 
 <pre id="output"></pre>
 
 <script src="mechanics.js"></script>
 <script src="app.js"></script>
-
 </body>
 </html>
+``
