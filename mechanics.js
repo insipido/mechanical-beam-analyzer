@@ -1,36 +1,30 @@
 const SECTIONS = 120;
 
 function analyzeBeam({ L, E, I, pointLoads, distLoads, supportA, supportB }) {
-  if (supportA === supportB) {
-    throw new Error("Supports cannot be at the same location");
-  }
+  if (supportA === supportB) throw new Error("Supports cannot coincide");
 
   const dx = L / SECTIONS;
   const x = [], V = [], M = [], y = [];
 
   const reactions = computeReactions(
-    L,
-    pointLoads,
-    distLoads,
-    supportA,
-    supportB
+    L, pointLoads, distLoads, supportA, supportB
   );
 
   for (let i = 0; i <= SECTIONS; i++) {
     const xi = i * dx;
-
     let shear = 0;
     let moment = 0;
 
-    // Reactions
-    if (xi >= supportA) shear += reactions.RA;
-    if (xi >= supportB) shear += reactions.RB;
+    if (xi >= supportA) {
+      shear += reactions.RA;
+      moment += reactions.RA * (xi - supportA);
+    }
 
-    // Moments from reactions
-    if (xi >= supportA) moment += reactions.RA * (xi - supportA);
-    if (xi >= supportB) moment += reactions.RB * (xi - supportB);
+    if (xi >= supportB) {
+      shear += reactions.RB;
+      moment += reactions.RB * (xi - supportB);
+    }
 
-    // Point loads
     pointLoads.forEach(p => {
       if (xi >= p.x) {
         shear -= p.P;
@@ -38,7 +32,6 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads, supportA, supportB }) {
       }
     });
 
-    // Distributed loads
     distLoads.forEach(d => {
       if (xi >= d.x1) {
         const len = Math.min(xi, d.x2) - d.x1;
@@ -55,7 +48,6 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads, supportA, supportB }) {
     M.push(moment);
   }
 
-  // Deflection (Euler–Bernoulli)
   y[0] = 0;
   let slope = 0;
 
@@ -64,14 +56,13 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads, supportA, supportB }) {
     y[i] = y[i - 1] + slope * dx;
   }
 
-  // Remove rigid-body motion (y(a)=0 and y(b)=0)
   const ya = interpolate(x, y, supportA);
   const yb = interpolate(x, y, supportB);
 
   for (let i = 0; i <= SECTIONS; i++) {
-    const correction =
+    const corr =
       ya + (yb - ya) * ((x[i] - supportA) / (supportB - supportA));
-    y[i] -= correction;
+    y[i] -= corr;
   }
 
   return { reactions, x, V, M, y };
@@ -79,24 +70,22 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads, supportA, supportB }) {
 
 function computeReactions(L, P, W, a, b) {
   let total = 0;
-  let momentA = 0;
+  let mA = 0;
 
   P.forEach(p => {
     total += p.P;
-    momentA += p.P * (p.x - a);
+    mA += p.P * (p.x - a);
   });
 
   W.forEach(d => {
-    const Wt = d.w * (d.x2 - d.x1);
+    const wT = d.w * (d.x2 - d.x1);
     const xc = (d.x1 + d.x2) / 2;
-    total += Wt;
-    momentA += Wt * (xc - a);
+    total += wT;
+    mA += wT * (xc - a);
   });
 
-  const RB = momentA / (b - a);
-  const RA = total - RB;
-
-  return { RA, RB };
+  const RB = mA / (b - a);
+  return { RA: total - RB, RB };
 }
 
 function interpolate(x, y, xi) {
