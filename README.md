@@ -1,20 +1,15 @@
-# Mechanical Structure Analyzer
+# Structural Analyzer
 
-Browser-based mechanical structure modeling and analysis tool.
+Web-based mechanical beam analysis tool.
 
-## Current Capabilities
-- Interactive canvas-based modeling
-- Add nodes, beams, and point loads
-- Determinate beam analysis
-- Support reaction calculation
-- SI / Imperial unit selection (SI internal)
+## Features
+- Real unit system (SI internal)
+- Point loads
+- Distributed loads
+- Shear and bending moment diagrams
+- Determinate & indeterminate beam solving
 
-## Assumptions
-- Linear elastic
-- Small deflections
-- Simply supported beam
-- Educational / preliminary use only
-
-## Deployment
-Host directly on GitHub Pages (no build steps required).
-``
+## Next Extensions (Architecturally Ready)
+- Frame elements
+- Truss solvers
+- Image-assisted force detection
