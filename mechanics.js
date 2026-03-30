@@ -1,12 +1,20 @@
-function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
-  const n = 40;
-  const dx = L / n;
+/**
+ * Euler–Bernoulli beam statics (shear & moment only)
+ * Deflection uses E and I but is intentionally not faked here.
+ */
 
-  let x = [], V = [], M = [];
-  let reactions = computeReactions(L, pointLoads, distLoads);
+function analyzeBeam({ L, pointLoads, distLoads, sections = 80 }) {
+  if (L <= 0) throw new Error("Beam length must be positive.");
 
-  for (let i = 0; i <= n; i++) {
-    let xi = i * dx;
+  const dx = L / sections;
+  const x = [];
+  const V = [];
+  const M = [];
+
+  const reactions = computeReactions(L, pointLoads, distLoads);
+
+  for (let i = 0; i <= sections; i++) {
+    const xi = i * dx;
     let shear = reactions.RA;
     let moment = reactions.RA * xi;
 
@@ -18,11 +26,13 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
     });
 
     distLoads.forEach(d => {
-      if (xi >= d.x1) {
-        const len = Math.min(xi, d.x2) - d.x1;
-        const w = d.w * len;
-        shear -= w;
-        moment -= w * (xi - (d.x1 + len / 2));
+      if (xi > d.x1) {
+        const length = Math.min(xi, d.x2) - d.x1;
+        if (length > 0) {
+          const wRes = d.w * length;
+          shear -= wRes;
+          moment -= wRes * (xi - (d.x1 + length / 2));
+        }
       }
     });
 
@@ -35,7 +45,8 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
 }
 
 function computeReactions(L, P, W) {
-  let total = 0, moment = 0;
+  let total = 0;
+  let moment = 0;
 
   P.forEach(p => {
     total += p.P;
@@ -52,4 +63,3 @@ function computeReactions(L, P, W) {
   const RB = moment / L;
   return { RA: total - RB, RB };
 }
-``
