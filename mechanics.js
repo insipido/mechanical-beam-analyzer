@@ -1,4 +1,4 @@
-const SECTIONS = 100;
+const SECTIONS = 120;
 
 function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
   const dx = L / SECTIONS;
@@ -22,9 +22,9 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
       if (xi >= d.x1) {
         const len = Math.min(xi, d.x2) - d.x1;
         if (len > 0) {
-          const w = d.w * len;
-          shear -= w;
-          moment -= w * (xi - (d.x1 + len / 2));
+          const wRes = d.w * len;
+          shear -= wRes;
+          moment -= wRes * (xi - (d.x1 + len / 2));
         }
       }
     });
@@ -34,19 +34,15 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
     M.push(moment);
   }
 
-  // Deflection by double integration
   y[0] = 0;
   let slope = 0;
   for (let i = 1; i <= SECTIONS; i++) {
-    const curvature = M[i - 1] / (E * I);
-    slope += curvature * dx;
+    slope += M[i - 1] / (E * I) * dx;
     y[i] = y[i - 1] + slope * dx;
   }
 
-  const correction = y[SECTIONS] / L;
-  for (let i = 0; i <= SECTIONS; i++) {
-    y[i] -= correction * x[i];
-  }
+  const c = y[SECTIONS] / L;
+  for (let i = 0; i <= SECTIONS; i++) y[i] -= c * x[i];
 
   return { reactions, x, V, M, y };
 }
@@ -54,16 +50,14 @@ function analyzeBeam({ L, E, I, pointLoads, distLoads }) {
 function computeReactions(L, P, W) {
   let total = 0, moment = 0;
 
-  P.forEach(p => {
-    total += p.P;
-    moment += p.P * p.x;
-  });
-
+  P.forEach(p => { total += p.P; moment += p.P * p.x; });
   W.forEach(d => {
-    const wTotal = d.w * (d.x2 - d.x1);
+    const wT = d.w * (d.x2 - d.x1);
     const xc = (d.x1 + d.x2) / 2;
-    total += wTotal;
-    moment += wTotal * xc;
+    total += wT;
+    moment += wT * xc;
   });
 
   const RB = moment / L;
+  return { RA: total - RB, RB };
+}
