@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <title>Mechanical Beam Analyzer</title>
 
-  <link rel="stylesheet" href="style.cssal Beam Analyzer</h1>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Mechanical Beam Analyzer</h1>
 
 <div class="toolbar">
   <label for="units">Units:</label>
@@ -20,14 +24,14 @@
 </div>
 
 <div class="inputs">
-  <label for="L">Beam Length</label>
-  <input id="L" type="number" step="any" value="6">
+  <label for="L">Beam Length (m)</label>
+  <input id="L" type="number" value="6">
 
   <label for="E">Young’s Modulus E (Pa)</label>
-  <input id="E" type="number" step="any" value="200000000000">
+  <input id="E" type="number" value="200000000000">
 
   <label for="I">Moment of Inertia I (m⁴)</label>
-  <input id="I" type="number" step="any" value="0.00001">
+  <input id="I" type="number" value="0.00001">
 </div>
 
 <h3>Point Load</h3>
@@ -55,8 +59,6 @@
   <button id="addDistLoad">Add Distributed Load</button>
 </div>
 
-<div id="loadsList"></div>
-
 <canvas id="beam" width="900" height="220"></canvas>
 <canvas id="shear" width="900" height="150"></canvas>
 <canvas id="moment" width="900" height="150"></canvas>
@@ -64,7 +66,9 @@
 
 <pre id="output"></pre>
 
-<script src="mechanics.jsript src="app.js"></script>
+<!-- ✅ THESE MUST BE SCRIPT TAGS -->
+<script src="mechanics.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
