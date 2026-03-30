@@ -1,4 +1,3 @@
-
 function analyzeBeamFull(L, P, a, E, I, points = 100) {
   const RA = P * (L - a) / L;
   const RB = P * a / L;
