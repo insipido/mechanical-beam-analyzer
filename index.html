@@ -2,22 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Structural Analyzer</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Mechanical Beam Analyzer</title>
+  style.css
 </head>
 <body>
 
-<h1>Structural Analyzer</h1>
+<h1>Mechanical Beam Analyzer</h1>
 
 <div class="toolbar">
-  <label>
-    Tool:
-    <select id="tool">
-      <option value="point">Point Load</option>
-      <option value="distributed">Distributed Load</option>
-    </select>
-  </label>
-
   <label>
     Units:
     <select id="units">
@@ -26,26 +18,41 @@
     </select>
   </label>
 
-  <button id="analyze">Analyze</button>
-  <button id="reset">Reset</button>
+  <button id="analyzeBtn">Analyze</button>
+  <button id="resetBtn">Reset</button>
 
   <span id="status">Idle</span>
 </div>
 
 <div class="inputs">
-  <label>Beam Length <input id="L" value="6"></label>
-  <label>E (Pa) <input id="E" value="200000000000"></label>
-  <label>I (m⁴) <input id="I" value="0.00001"></label>
+  <label>Beam Length <input id="L" type="number" step="any"></label>
+  <label>E (Pa) <input id="E" type="number" step="any"></label>
+  <label>I (m⁴) <input id="I" type="number" step="any"></label>
 </div>
 
-<canvas id="beam" width="900" height="200"></canvas>
+<h3>Point Load</h3>
+<div class="inputs">
+  <label>P <input id="P" type="number" step="any"></label>
+  <label>x <input id="Px" type="number" step="any"></label>
+  <button id="addPointLoad">Add</button>
+</div>
+
+<h3>Distributed Load</h3>
+<div class="inputs">
+  <label>w <input id="w" type="number" step="any"></label>
+  <label>x₁ <input id="x1" type="number" step="any"></label>
+  <label>x₂ <input id="x2" type="number" step="any"></label>
+  <button id="addDistLoad">Add</button>
+</div>
+
+<canvas id="beam" width="900" height="150"></canvas>
 <canvas id="shear" width="900" height="150"></canvas>
 <canvas id="moment" width="900" height="150"></canvas>
 
 <pre id="output"></pre>
 
-<script src="mechanics.js"></script>
-<script src="app.js"></script>
+mechanics.jsscript>
+app.js>
 </body>
 </html>
 ``
