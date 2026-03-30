@@ -6,7 +6,8 @@ const beamCtx = beamCanvas.getContext("2d");
 const imageCanvas = document.getElementById("imageCanvas");
 const imageCtx = imageCanvas.getContext("2d");
 
-document.getElementById("imageUpload").addEventListener("change", e => {
+// Image upload preview
+imageUpload.addEventListener("change", e => {
   const file = e.target.files[0];
   if (!file) return;
 
@@ -77,7 +78,7 @@ function analyze() {
   plotDiagram("momentCanvas", result.x, result.moment, "Moment (kN·m)");
   plotDiagram("deflectionCanvas", result.x, result.deflection, "Deflection (m)");
 
-  document.getElementById("results").innerHTML = `
+  results.innerHTML = `
     Reaction A: ${result.RA.toFixed(2)} kN<br>
     Reaction B: ${result.RB.toFixed(2)} kN<br>
     Max Moment: ${Math.max(...result.moment).toFixed(2)} kN·m<br>
@@ -100,10 +101,12 @@ stopBtn.onclick = () => {
 resetBtn.onclick = () => {
   analysisRunning = false;
   status.innerText = "Status: Reset";
-  [beamCanvas, imageCanvas, shearCanvas, momentCanvas, deflectionCanvas].forEach(c =>
-    c.getContext("2d").clearRect(0, 0, c.width, c.height)
-  );
+
+  [beamCanvas, imageCanvas, shearCanvas, momentCanvas, deflectionCanvas]
+    .forEach(c => c.getContext("2d").clearRect(0, 0, c.width, c.height));
+
   results.innerHTML = "";
 };
 
 drawBeam(6, 10, 3);
+``
