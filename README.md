@@ -1,15 +1,20 @@
-# Structural Analyzer
+# Mechanical Structure Analyzer
 
-Finite‑element structural solver in the browser.
+Browser-based mechanical structure modeling and analysis tool.
 
-## Supported
-- Determinate & indeterminate structures
-- Beams, frames, trusses
-- Point, distributed, moment loads
-- SI & Imperial units (SI internal)
+## Current Capabilities
+- Interactive canvas-based modeling
+- Add nodes, beams, and point loads
+- Determinate beam analysis
+- Support reaction calculation
+- SI / Imperial unit selection (SI internal)
+
+## Assumptions
+- Linear elastic
+- Small deflections
+- Simply supported beam
+- Educational / preliminary use only
 
 ## Deployment
-Enable GitHub Pages from repository root.
-
-## Disclaimer
-Educational / preliminary analysis only.
+Host directly on GitHub Pages (no build steps required).
+``
