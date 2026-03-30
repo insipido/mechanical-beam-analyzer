@@ -1,42 +1,35 @@
-function analyzeBeamMultiple(L, loads, E, I, points = 150) {
-  let RA = 0;
-  let RB = 0;
+/*
+  Determinate simply supported beam solver
+  Assumes:
+  - horizontal beam
+  - supports at first and last node
+  - vertical point loads only
+*/
 
-  loads.forEach(load => {
-    RA += load.force * (L - load.position) / L;
-    RB += load.force * load.position / L;
-  });
-
-  let x = [], shear = [], moment = [], deflection = [];
-
-  for (let i = 0; i <= points; i++) {
-    let xi = (L * i) / points;
-    x.push(xi);
-
-    let V = RA;
-    let M = RA * xi;
-    let y = 0;
-
-    loads.forEach(load => {
-      if (xi >= load.position) {
-        V -= load.force;
-        M -= load.force * (xi - load.position);
-      }
-      if (xi >= load.position) {
-        y +=
-          load.force *
-          (xi - load.position) *
-          (L - xi) *
-          (L - load.position) /
-          (6 * E * I * L);
-      }
-    });
-
-    shear.push(V);
-    moment.push(M);
-    deflection.push(y);
+function analyzeBeam(nodes, beams, loads) {
+  if (nodes.length < 2 || beams.length !== 1) {
+    return { error: "Exactly one beam and two nodes required." };
   }
 
-  return { RA, RB, x, shear, moment, deflection };
+  const x0 = nodes[0].x;
+  const x1 = nodes[1].x;
+  const L = Math.abs(x1 - x0);
+
+  let totalLoad = 0;
+  let momentAboutA = 0;
+
+  loads.forEach(load => {
+    totalLoad += load.value;
+    momentAboutA += load.value * load.position;
+  });
+
+  const RB = momentAboutA / L;
+  const RA = totalLoad - RB;
+
+  return {
+    length: L,
+    reactionA: RA,
+    reactionB: RB,
+    totalLoad: totalLoad
+  };
 }
-``
