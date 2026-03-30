@@ -1,30 +1,34 @@
-function analyze() {
-  const L = Number(document.getElementById("beamLength").value);
-  const P = Number(document.getElementById("forceValue").value);
-  const a = Number(document.getElementById("forcePosition").value);
-  const E = Number(document.getElementById("E").value);
-  const I = Number(document.getElementById("I").value);
+function analyzeBeamFull(L, P, a, E, I, points = 120) {
+  const RA = P * (L - a) / L;
+  const RB = P * a / L;
 
-  drawBeam(L, P, a);
+  let x = [];
+  let shear = [];
+  let moment = [];
+  let deflection = [];
 
-  const result = analyzeBeamFull(L, P, a, E, I);
+  for (let i = 0; i <= points; i++) {
+    let xi = (L * i) / points;
+    x.push(xi);
 
-  plotDiagram("shearCanvas", result.x, result.shear, "Shear (kN)");
-  plotDiagram("momentCanvas", result.x, result.moment, "Moment (kN·m)");
-  plotDiagram(
-    "deflectionCanvas",
-    result.x,
-    result.deflection,
-    "Deflection (m)"
-  );
+    let V = xi < a ? RA : RA - P;
+    shear.push(V);
 
-  document.getElementById("results").innerHTML = `
-    Reaction A: ${result.RA.toFixed(2)} kN<br>
-    Reaction B: ${result.RB.toFixed(2)} kN<br>
-    Max Moment: ${Math.max(...result.moment).toFixed(2)} kN·m<br>
-    Max Deflection: ${Math.max(
-      ...result.deflection.map(Math.abs)
-    ).toExponential(3)} m
-  `;
+    let M = xi < a ? RA * xi : RA * xi - P * (xi - a);
+    moment.push(M);
+
+    let y;
+    if (xi <= a) {
+      y =
+        (P * xi * (L - a) * (L * L - (L - a) ** 2 - xi ** 2)) /
+        (6 * E * I * L);
+    } else {
+      y =
+        (P * a * (L - xi) * (L * L - a ** 2 - (L - xi) ** 2)) /
+        (6 * E * I * L);
+    }
+    deflection.push(y);
+  }
+
+  return { RA, RB, x, shear, moment, deflection };
 }
-``
