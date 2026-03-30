@@ -1,13 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mechanical Beam Analyzer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Mechanical Beam Analyzer</h1>
+
 <div class="control-panel">
   <input type="file" id="imageUpload" accept="image/*">
-
   <button id="startBtn">Start Analysis</button>
   <button id="stopBtn">Stop</button>
   <button id="resetBtn">Reset</button>
-
   <span id="status">Status: Idle</span>
 </div>
 
-
 <h3>Uploaded Reference Image</h3>
-<canvas id="imageCanvas" width="900" height="300"></canvas>
+<canvas id="imageCanvas" width="900" height="250"></canvas>
+
+<h3>Beam Model</h3>
+<canvas id="canvas" width="900" height="200"></canvas>
+
+<div class="inputs">
+  <label>Beam Length (m)</label>
+  <input id="beamLength" type="number" value="6">
+
+  <label>Force (kN)</label>
+  <input id="forceValue" type="number" value="10">
+
+  <label>Force Position (m)</label>
+  <input id="forcePosition" type="number" value="3">
+
+  <label>E (Pa)</label>
+  <input id="E" type="number" value="200000000000">
+
+  <label>I (m⁴)</label>
+  <input id="I" type="number" value="0.00001">
+</div>
+
+<div id="results"></div>
+
+<h3>Shear Force Diagram</h3>
+<canvas id="shearCanvas" width="900" height="200"></canvas>
+
+<h3>Bending Moment Diagram</h3>
+<canvas id="momentCanvas" width="900" height="200"></canvas>
+
+<h3>Deflection Curve</h3>
+<canvas id="deflectionCanvas" width="900" height="200"></canvas>
+
+<script src="mechanics.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
+``
